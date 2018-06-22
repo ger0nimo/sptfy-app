@@ -1,5 +1,6 @@
 package com.sptfy.web.app.Config;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -9,22 +10,35 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.User.UserBuilder;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.access.channel.ChannelProcessingFilter;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
+
+    @Autowired
+    private CorsFilter corsFilter;
+
+    @Autowired
+    PasswordEncoder passwordEncoder;
+
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 
         UserBuilder users = User.withDefaultPasswordEncoder();
 
-        auth.inMemoryAuthentication()
-                .withUser(users.username("user").password("qwerty").roles("USER"))
-                .withUser(users.username("user2").password("12345").roles("USER"));
+        String password = passwordEncoder().encode("qwerty");
+        auth.inMemoryAuthentication().passwordEncoder(passwordEncoder)
+                .withUser(users.username("user").password(password).roles("USER"));
     }
+
+
+
 
     @Bean
     public AuthenticationManager authenticationManagerBean() throws Exception {
@@ -34,17 +48,25 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
 
+        http.addFilterBefore(this.corsFilter, ChannelProcessingFilter.class);
         http
-            .authorizeRequests()
+                .authorizeRequests()
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()
                 .and()
                 .httpBasic();
+//                .anyRequest()
+//                .denyAll()
+//                .and()
+//                .formLogin()
+//                .disable();
     }
 
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
+
+
 }
