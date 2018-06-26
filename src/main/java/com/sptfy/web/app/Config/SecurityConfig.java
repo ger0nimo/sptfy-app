@@ -3,6 +3,8 @@ package com.sptfy.web.app.Config;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.env.Environment;
+import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -14,7 +16,11 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.provider.token.TokenStore;
+import org.springframework.security.oauth2.provider.token.store.JdbcTokenStore;
 import org.springframework.security.web.access.channel.ChannelProcessingFilter;
+
+import javax.sql.DataSource;
 
 @Configuration
 @EnableWebSecurity
@@ -23,18 +29,23 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private CorsFilter corsFilter;
 
-    @Autowired
-    PasswordEncoder passwordEncoder;
-
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 
-        UserBuilder users = User.withDefaultPasswordEncoder();
+//        UserBuilder users = User.withDefaultPasswordEncoder();
+//
+//        String password = passwordEncoder().encode("qwerty");
+//        auth.inMemoryAuthentication().passwordEncoder(passwordEncoder)
+//                .withUser(users.username("user").password(password).roles("USER"));
 
-        String password = passwordEncoder().encode("qwerty");
-        auth.inMemoryAuthentication().passwordEncoder(passwordEncoder)
-                .withUser(users.username("user").password(password).roles("USER"));
+
+
+//        auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder);
+
+
+        auth.inMemoryAuthentication()
+                .withUser("user").password("123").roles("USER");
     }
 
 
@@ -48,7 +59,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
 
-        http.addFilterBefore(this.corsFilter, ChannelProcessingFilter.class);
+//        http.addFilterBefore(this.corsFilter, ChannelProcessingFilter.class);
         http
                 .authorizeRequests()
                 .anyRequest().authenticated()
@@ -63,10 +74,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //                .disable();
     }
 
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
+//    @Bean
+//    public PasswordEncoder passwordEncoder() {
+//        return new BCryptPasswordEncoder();
+//    }
+
+
+//    @Bean
+//    public TokenStore tokenStore() {
+//        return new JdbcTokenStore(authorizationServerConfig.dataSource());
+//    }
 
 
 }
