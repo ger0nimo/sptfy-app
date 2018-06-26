@@ -29,6 +29,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private CorsFilter corsFilter;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
@@ -45,7 +48,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 
         auth.inMemoryAuthentication()
-                .withUser("user").password("123").roles("USER");
+                .withUser("user").password(passwordEncoder.encode("123")).roles("USER");
     }
 
 
@@ -74,10 +77,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //                .disable();
     }
 
-//    @Bean
-//    public PasswordEncoder passwordEncoder() {
-//        return new BCryptPasswordEncoder();
-//    }
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
 
 
 //    @Bean
