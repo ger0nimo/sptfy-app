@@ -71,13 +71,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/h2-console/**").hasRole("ADMIN") //order of these two is important
                 .anyRequest().hasRole("USER")                               // !!!
-                .and()
-                .formLogin()
+//                .and()
+//                .formLogin()
 //                .and()
 //                .httpBasic()
                 .and()
                 .csrf().disable()                       //these two mandatory to enable
-                .headers().frameOptions().disable();    //H2 Console when Spring Security is configured
+                .headers().frameOptions().disable()    //H2 Console when Spring Security is configured
+                .and()
+                .formLogin()
+                .disable();
     }
 
     @Bean

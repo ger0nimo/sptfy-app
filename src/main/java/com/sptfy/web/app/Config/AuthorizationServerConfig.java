@@ -44,9 +44,9 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     private Resource schemaScript;
 
 
-
-    @Autowired
-    Environment env;
+//
+//    @Autowired
+//    Environment env;
 
 //    @Qualifier("dataSource")
 //    @Autowired
@@ -114,12 +114,11 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     }
 
     @Bean
-    //@Primary
     public DataSource dataSource() {
 
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
         dataSource.setDriverClassName("org.h2.Driver");
-        dataSource.setUrl("jdbc:h2:mem:testdb");
+        dataSource.setUrl("jdbc:h2:file:~/test;");
         dataSource.setUsername("sa");
         dataSource.setPassword("");
         return dataSource;
