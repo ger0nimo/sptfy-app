@@ -52,13 +52,13 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 //    @Autowired
 //    private DataSource dataSource;
 //
-//    private Integer tokenValidity = 60;
-//
-//    private Integer refreshTokenValidity = 3600;
-//
-//    @Autowired
-//    PasswordEncoder passwordEncoder;
-//
+    private Integer tokenValidity = 60;
+
+    private Integer refreshTokenValidity = 3600;
+
+    @Autowired
+    PasswordEncoder passwordEncoder;
+
 //    @Autowired
 //    UserDetailsService userDetailsService;
 
@@ -73,17 +73,26 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 
     @Override
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
-        clients.jdbc(dataSource())
+//        clients.jdbc(dataSource())
+//                .withClient(this.clientId)
+//                .authorizedGrantTypes("implicit")
+//                .scopes("read")
+//                .autoApprove(true)
+//                .and()
+//                .withClient(this.clientId)
+//                .secret(this.clientSecret)
+//                .authorizedGrantTypes(
+//                        "password","authorization_code", "refresh_token")
+//                .scopes("read");
+
+
+        clients.inMemory()
                 .withClient(this.clientId)
-                .authorizedGrantTypes("implicit")
-                .scopes("read")
-                .autoApprove(true)
-                .and()
-                .withClient(this.clientId)
-                .secret(this.clientSecret)
-                .authorizedGrantTypes(
-                        "password","authorization_code", "refresh_token")
-                .scopes("read");
+                .secret(this.passwordEncoder.encode(this.clientSecret))
+                .authorizedGrantTypes("password", "authorization_code", "refresh_token")
+                .accessTokenValiditySeconds(this.tokenValidity)
+                .refreshTokenValiditySeconds(this.refreshTokenValidity)
+                .scopes("read", "write");
     }
 
     @Override
@@ -98,20 +107,20 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     public TokenStore tokenStore() {
         return new JdbcTokenStore(dataSource());
     }
-
-    @Bean
-    public DataSourceInitializer dataSourceInitializer(DataSource dataSource) {
-        DataSourceInitializer initializer = new DataSourceInitializer();
-        initializer.setDataSource(dataSource);
-        initializer.setDatabasePopulator(databasePopulator());
-        return initializer;
-    }
-
-    private DatabasePopulator databasePopulator() {
-        ResourceDatabasePopulator populator = new ResourceDatabasePopulator();
-        populator.addScript(schemaScript);
-        return populator;
-    }
+//
+//    @Bean
+//    public DataSourceInitializer dataSourceInitializer(DataSource dataSource) {
+//        DataSourceInitializer initializer = new DataSourceInitializer();
+//        initializer.setDataSource(dataSource);
+//        initializer.setDatabasePopulator(databasePopulator());
+//        return initializer;
+//    }
+//
+//    private DatabasePopulator databasePopulator() {
+//        ResourceDatabasePopulator populator = new ResourceDatabasePopulator();
+//        populator.addScript(schemaScript);
+//        return populator;
+//    }
 
     @Bean
     public DataSource dataSource() {
@@ -124,6 +133,3 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
         return dataSource;
     }
 }
-
-//http://www.baeldung.com/rest-api-spring-oauth2-angularjs
-//https://dzone.com/articles/secure-spring-rest-with-spring-security-and-oauth2

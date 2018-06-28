@@ -8,12 +8,14 @@
 //import org.springframework.security.core.userdetails.UserDetails;
 //import org.springframework.security.core.userdetails.UserDetailsService;
 //import org.springframework.security.core.userdetails.UsernameNotFoundException;
+//import org.springframework.stereotype.Service;
 //
 //import java.util.ArrayList;
 //import java.util.Collection;
 //import java.util.List;
 //import java.util.Optional;
 //
+//@Service
 //public class UserDetailsServiceImpl implements UserDetailsService {
 //
 //    private UserRepository userRepository;
@@ -24,16 +26,11 @@
 //
 //    @Override
 //    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-//        Optional<User> user = this.userRepository.findByEmail(username);
+//        Optional<User> user = this.userRepository.findByUsername(username);
 //        if (!user.isPresent())
 //            throw new UsernameNotFoundException("User does not exists!");
-//        return new UserData(user.get().getId(), user.get().getName(), user.get().getEmail(), user.get().getPassword(), user.get().isActive(), this.getAuthoritiesList(user.get().getRoles()));
+//        return new User(user.get().getId(), user.get().getUsername(), user.get().getPassword(), user.get().getRole());
 //    }
 //
-//    private List<GrantedAuthority> getAuthoritiesList(Collection<Role> roles) {
-//        List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
-//        for (Role role : roles)
-//            grantedAuthorities.add(new SimpleGrantedAuthority(role.getName()));
-//        return grantedAuthorities;
-//    }
+//
 //}
