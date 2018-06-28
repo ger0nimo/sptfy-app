@@ -81,12 +81,12 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 //                .autoApprove(true)
 //                .and()
 //                .withClient(this.clientId)
-//                .secret(this.clientSecret)
-//                .authorizedGrantTypes(
-//                        "password","authorization_code", "refresh_token")
+//                .secret(this.passwordEncoder.encode(this.clientSecret))
+//                .authorizedGrantTypes("password", "authorization_code", "refresh_token")
 //                .scopes("read");
 
 
+        //password flow
         clients.inMemory()
                 .withClient(this.clientId)
                 .secret(this.passwordEncoder.encode(this.clientSecret))
@@ -94,6 +94,16 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
                 .accessTokenValiditySeconds(this.tokenValidity)
                 .refreshTokenValiditySeconds(this.refreshTokenValidity)
                 .scopes("read", "write");
+
+        //implicit flow
+//        clients.inMemory()
+//                .withClient(this.clientId)
+//                .authorizedGrantTypes("implicit")
+//                .scopes("read")
+//                .autoApprove(true);
+
+
+
     }
 
     @Override
@@ -119,4 +129,5 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
         dataSource.setPassword("");
         return dataSource;
     }
+
 }
