@@ -43,64 +43,42 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     }
 
+
+    @Override
+    public void configure(HttpSecurity http) throws Exception {
+
+//        http
+//                .authorizeRequests()
+//                .antMatchers("/h2-console").permitAll()
+//                .antMatchers("/*").authenticated() //order of these two is important
+////                .anyRequest().hasRole("USER")                               // !!!
+////                .and()
+////                .formLogin()
+//////                .and()
+//////                .httpBasic()
+//                .and()
+//                .csrf().disable()                       //these two mandatory to enable
+//                .headers().frameOptions().disable();    //H2 Console when Spring Security is configured
+
+
+        //If Resource Server Config is configured here below code is sufficient
+        http
+                .authorizeRequests()
+                .anyRequest()
+                .denyAll()
+                .and()
+                .formLogin()
+                .disable();
+
+    }
+
     @Bean
     public AuthenticationManager authenticationManagerBean() throws Exception {
         return super.authenticationManagerBean();
-    }
-
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
-
-////        http.addFilterBefore(this.corsFilter, ChannelProcessingFilter.class);
-//        http
-//                .authorizeRequests()
-//                .anyRequest().authenticated()
-//                .and()
-//                .formLogin()
-//                .and()
-//                .httpBasic()
-//                .and()
-//                .headers().frameOptions().disable();
-////                .anyRequest()
-////                .denyAll()
-////                .and()
-////                .formLogin()
-////                .disable();
-
-        http
-                .authorizeRequests()
-                .antMatchers("/h2-console/**").hasRole("ADMIN") //order of these two is important
-                .anyRequest().hasRole("USER")                               // !!!
-                .and()
-                .formLogin()
-//                .and()
-//                .httpBasic()
-                .and()
-                .csrf().disable()                       //these two are mandatory to enable
-                .headers().frameOptions().disable();    //H2 Console when Spring Security is configured
-//                .and()
-//                .formLogin()
-//                .disable();
-
-//        http.authorizeRequests()
-//                .anyRequest()
-//                .denyAll()
-//                .and()
-//                .formLogin().disable();
-
-
     }
 
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
-
-
-//    @Bean
-//    public TokenStore tokenStore() {
-//        return new JdbcTokenStore(authorizationServerConfig.dataSource());
-//    }
-
-
 }

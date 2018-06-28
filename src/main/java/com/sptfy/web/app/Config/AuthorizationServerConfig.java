@@ -73,6 +73,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 
     @Override
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
+
 //        clients.jdbc(dataSource())
 //                .withClient(this.clientId)
 //                .authorizedGrantTypes("implicit")
@@ -107,20 +108,6 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     public TokenStore tokenStore() {
         return new JdbcTokenStore(dataSource());
     }
-//
-//    @Bean
-//    public DataSourceInitializer dataSourceInitializer(DataSource dataSource) {
-//        DataSourceInitializer initializer = new DataSourceInitializer();
-//        initializer.setDataSource(dataSource);
-//        initializer.setDatabasePopulator(databasePopulator());
-//        return initializer;
-//    }
-//
-//    private DatabasePopulator databasePopulator() {
-//        ResourceDatabasePopulator populator = new ResourceDatabasePopulator();
-//        populator.addScript(schemaScript);
-//        return populator;
-//    }
 
     @Bean
     public DataSource dataSource() {

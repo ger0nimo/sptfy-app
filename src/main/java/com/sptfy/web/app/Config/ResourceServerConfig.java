@@ -14,19 +14,10 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
 
                 http
                 .authorizeRequests()
-                .antMatchers("/h2-console/**").hasRole("ADMIN") //order of these two is important
-                .anyRequest().hasRole("USER")                               // !!!
+                        .antMatchers("/h2-console").permitAll()
+                        .antMatchers("/rest/**").authenticated() // * - authentication required for everything after /rest, ** - everything after /rest including /rest
                 .and()
-                .formLogin()
-//                .and()
-//                .httpBasic()
-                .and()
-                .csrf().disable()                       //these two mandatory to enable
+                .csrf().disable()                       //these two are mandatory to enable
                 .headers().frameOptions().disable();    //H2 Console when Spring Security is configured
-//                .and()
-//                .formLogin()
-//                .disable();
-
-
     }
 }
