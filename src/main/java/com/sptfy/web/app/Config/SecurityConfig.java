@@ -26,9 +26,6 @@ import javax.sql.DataSource;
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-//    @Autowired
-//    private CorsFilter corsFilter;
-
     @Autowired
     private PasswordEncoder passwordEncoder;
 
@@ -61,7 +58,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //                .headers().frameOptions().disable();    //H2 Console when Spring Security is configured
 
 
-        //If Resource Server Config is configured here below code is sufficient
+        //If Resource Server Config is configured here below code is sufficient. Otherwise code above or code from ResourceServerConfig is required
         http
                 .authorizeRequests()
                 .anyRequest()
