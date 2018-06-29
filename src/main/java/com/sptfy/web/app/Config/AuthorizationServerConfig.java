@@ -20,6 +20,8 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.A
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
+import org.springframework.security.oauth2.provider.code.AuthorizationCodeServices;
+import org.springframework.security.oauth2.provider.code.JdbcAuthorizationCodeServices;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.JdbcTokenStore;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
@@ -32,7 +34,8 @@ import javax.sql.DataSource;
 public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdapter {
 
 
-    private String clientId = "webClientId";
+    private String passClientId = "PassClientId";
+    private String implClientId = "ImplClientId";
 
     private String clientSecret = "webSecret";
 
@@ -74,36 +77,35 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     @Override
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
 
-//        clients.jdbc(dataSource())
-//                .withClient(this.clientId)
-//                .authorizedGrantTypes("implicit")
-//                .scopes("read")
-//                .autoApprove(true)
-//                .and()
-//                .withClient(this.clientId)
-//                .secret(this.passwordEncoder.encode(this.clientSecret))
-//                .authorizedGrantTypes("password", "authorization_code", "refresh_token")
-//                .scopes("read");
-
-
-        //password flow
-        clients.inMemory()
-                .withClient(this.clientId)
+        //password and implicit flows in db
+        clients.jdbc(dataSource())
+                .withClient(this.implClientId)
+                .authorizedGrantTypes("implicit")
+                .scopes("read")
+                .autoApprove(true)
+                .and()
+                .withClient(this.passClientId)
                 .secret(this.passwordEncoder.encode(this.clientSecret))
                 .authorizedGrantTypes("password", "authorization_code", "refresh_token")
-                .accessTokenValiditySeconds(this.tokenValidity)
-                .refreshTokenValiditySeconds(this.refreshTokenValidity)
-                .scopes("read", "write");
+                .scopes("read")
+                .and().build();
 
-        //implicit flow
+
+        //password flow in memory
+//        clients.inMemory()
+//                .withClient(this.passClientId)
+//                .secret(this.passwordEncoder.encode(this.clientSecret))
+//                .authorizedGrantTypes("password", "authorization_code", "refresh_token")
+//                .accessTokenValiditySeconds(this.tokenValidity)
+//                .refreshTokenValiditySeconds(this.refreshTokenValidity)
+//                .scopes("read", "write");
+
+        //implicit flow in memory
 //        clients.inMemory()
 //                .withClient(this.clientId)
 //                .authorizedGrantTypes("implicit")
 //                .scopes("read")
 //                .autoApprove(true);
-
-
-
     }
 
     @Override
@@ -112,6 +114,8 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
         endpoints
                 .tokenStore(tokenStore())
                 .authenticationManager(authenticationManager);
+
+
     }
 
     @Bean
@@ -129,5 +133,10 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
         dataSource.setPassword("");
         return dataSource;
     }
+
+//    @Bean
+//    protected AuthorizationCodeServices authorizationCodeServices() {
+//        return new JdbcAuthorizationCodeServices(dataSource);
+//    }
 
 }

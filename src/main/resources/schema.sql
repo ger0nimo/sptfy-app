@@ -63,4 +63,4 @@ create table if not exists ClientDetails (
 
 
 
--- -- drop table if exists Cdsegnj;
+drop table if exists Cdsegnj;
