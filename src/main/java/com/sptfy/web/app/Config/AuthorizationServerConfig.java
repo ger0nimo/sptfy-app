@@ -82,29 +82,29 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
 
 //        //password and implicit flows in db
-        clients.jdbc(dataSource())
-//                .withClient(this.implClientId)
-//                .authorizedGrantTypes("implicit")
-//                .scopes("read")
-//                .autoApprove(true)
-//                .and()
-                .withClient(this.passClientId)
-                .secret(this.passwordEncoder.encode(this.clientSecret))
-                .authorizedGrantTypes("password", "authorization_code", "refresh_token")
-                .accessTokenValiditySeconds(this.tokenValidity)
-                .refreshTokenValiditySeconds(this.refreshTokenValidity)
-                .scopes("read", "write")
-                .and().build();
-
-
-        //password flow in memory
-//        clients.inMemory()
+//        clients.jdbc(dataSource())
+////                .withClient(this.implClientId)
+////                .authorizedGrantTypes("implicit")
+////                .scopes("read")
+////                .autoApprove(true)
+////                .and()
 //                .withClient(this.passClientId)
 //                .secret(this.passwordEncoder.encode(this.clientSecret))
 //                .authorizedGrantTypes("password", "authorization_code", "refresh_token")
 //                .accessTokenValiditySeconds(this.tokenValidity)
 //                .refreshTokenValiditySeconds(this.refreshTokenValidity)
-//                .scopes("read", "write");
+//                .scopes("read", "write")
+//                .and().build();
+
+
+        //password flow in memory
+        clients.inMemory()
+                .withClient(this.passClientId)
+                .secret(this.passwordEncoder.encode(this.clientSecret))
+                .authorizedGrantTypes("password", "authorization_code", "refresh_token")
+                .accessTokenValiditySeconds(this.tokenValidity)
+                .refreshTokenValiditySeconds(this.refreshTokenValidity)
+                .scopes("read", "write");
 
         //implicit flow in memory
 //        clients.inMemory()
@@ -130,7 +130,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
         return new JdbcTokenStore(dataSource());
     }
 
-    @Bean
+    //@Bean
     public DataSource dataSource() {
 
         DriverManagerDataSource dataSource = new DriverManagerDataSource();

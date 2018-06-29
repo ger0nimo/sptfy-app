@@ -27,26 +27,27 @@ import javax.sql.DataSource;
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-//    @Autowired
-//    private PasswordEncoder passwordEncoder;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
-    @Autowired                      //tmp
-    private DataSource dataSource;  //tmp
+//    @Autowired
+//    @Qualifier("dataSource")//tmp
+//    private DataSource dataSource;  //tmp
 
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 
-//        auth.inMemoryAuthentication()
-//                .withUser("user").password(passwordEncoder.encode("123")).roles("USER");
-//        auth.inMemoryAuthentication()
-//                .withUser("admin").password(passwordEncoder.encode("123")).roles("USER", "ADMIN");
+        auth.inMemoryAuthentication()
+                .withUser("user").password(passwordEncoder.encode("123")).roles("USER");
+        auth.inMemoryAuthentication()
+                .withUser("admin").password(passwordEncoder.encode("123")).roles("USER", "ADMIN");
 
-//        auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder);
 
-        auth.jdbcAuthentication().dataSource(dataSource)    //tmp
-                .usersByUsernameQuery("select username,password, enabled from users where username=?")
-                .authoritiesByUsernameQuery("select username, role from user_roles where username=?");
+
+//        auth.jdbcAuthentication().dataSource(dataSource)    //tmp
+//                .usersByUsernameQuery("select username,password, enabled from users where username=?")
+//                .authoritiesByUsernameQuery("select username, role from user_roles where username=?");
 
     }
 
