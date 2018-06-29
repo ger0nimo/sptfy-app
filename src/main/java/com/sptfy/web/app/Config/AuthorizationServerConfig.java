@@ -1,5 +1,7 @@
 package com.sptfy.web.app.Config;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -34,8 +36,10 @@ import javax.sql.DataSource;
 public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdapter {
 
 
-    private String passClientId = "PassClientId";
-    private String implClientId = "ImplClientId";
+    Logger logger = LoggerFactory.getLogger(getClass().getName());
+
+    private String passClientId = "passClientId";
+    private String implClientId = "implClientId";
 
     private String clientSecret = "webSecret";
 
@@ -77,17 +81,19 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     @Override
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
 
-        //password and implicit flows in db
+//        //password and implicit flows in db
         clients.jdbc(dataSource())
-                .withClient(this.implClientId)
-                .authorizedGrantTypes("implicit")
-                .scopes("read")
-                .autoApprove(true)
-                .and()
+//                .withClient(this.implClientId)
+//                .authorizedGrantTypes("implicit")
+//                .scopes("read")
+//                .autoApprove(true)
+//                .and()
                 .withClient(this.passClientId)
                 .secret(this.passwordEncoder.encode(this.clientSecret))
                 .authorizedGrantTypes("password", "authorization_code", "refresh_token")
-                .scopes("read")
+                .accessTokenValiditySeconds(this.tokenValidity)
+                .refreshTokenValiditySeconds(this.refreshTokenValidity)
+                .scopes("read", "write")
                 .and().build();
 
 
@@ -102,7 +108,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 
         //implicit flow in memory
 //        clients.inMemory()
-//                .withClient(this.clientId)
+//                .withClient(this.implClientId)
 //                .authorizedGrantTypes("implicit")
 //                .scopes("read")
 //                .autoApprove(true);
@@ -113,6 +119,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 
         endpoints
                 .tokenStore(tokenStore())
+                //.authorizationCodeServices(authorizationCodeServices())
                 .authenticationManager(authenticationManager);
 
 
@@ -136,7 +143,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 
 //    @Bean
 //    protected AuthorizationCodeServices authorizationCodeServices() {
-//        return new JdbcAuthorizationCodeServices(dataSource);
+//        return new JdbcAuthorizationCodeServices(dataSource());
 //    }
 
 }

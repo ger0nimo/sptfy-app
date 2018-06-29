@@ -1,6 +1,7 @@
 package com.sptfy.web.app.Config;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
@@ -26,17 +27,26 @@ import javax.sql.DataSource;
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+//    @Autowired
+//    private PasswordEncoder passwordEncoder;
+
+    @Autowired                      //tmp
+    private DataSource dataSource;  //tmp
 
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 
-        auth.inMemoryAuthentication()
-                .withUser("user").password(passwordEncoder.encode("123")).roles("USER");
-        auth.inMemoryAuthentication()
-                .withUser("admin").password(passwordEncoder.encode("123")).roles("USER", "ADMIN");
+//        auth.inMemoryAuthentication()
+//                .withUser("user").password(passwordEncoder.encode("123")).roles("USER");
+//        auth.inMemoryAuthentication()
+//                .withUser("admin").password(passwordEncoder.encode("123")).roles("USER", "ADMIN");
+
+//        auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder);
+
+        auth.jdbcAuthentication().dataSource(dataSource)    //tmp
+                .usersByUsernameQuery("select username,password, enabled from users where username=?")
+                .authoritiesByUsernameQuery("select username, role from user_roles where username=?");
 
     }
 
@@ -76,6 +86,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Bean
     public PasswordEncoder passwordEncoder() {
+
         return new BCryptPasswordEncoder();
     }
+
 }

@@ -29,7 +29,7 @@
 //        Optional<User> user = this.userRepository.findByUsername(username);
 //        if (!user.isPresent())
 //            throw new UsernameNotFoundException("User does not exists!");
-//        return new User(user.get().getId(), user.get().getUsername(), user.get().getPassword(), user.get().getRole());
+//        return new User(user.getId(), user.getUsername(), user.get().getPassword(), user.get().getRole());
 //    }
 //
 //
