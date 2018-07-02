@@ -30,10 +30,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-//    @Autowired
-//    @Qualifier("dataSource")//tmp
-//    private DataSource dataSource;  //tmp
+    @Autowired
+    @Qualifier("dataSource")//tmp
+    private DataSource dataSource;  //tmp
 
+//    @Autowired
+//    UserDetailsService userDetailsService;
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
@@ -44,11 +46,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .withUser("admin").password(passwordEncoder.encode("123")).roles("USER", "ADMIN");
 
 
+//        auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder);
+
 
 //        auth.jdbcAuthentication().dataSource(dataSource)    //tmp
-//                .usersByUsernameQuery("select username,password, enabled from users where username=?")
-//                .authoritiesByUsernameQuery("select username, role from user_roles where username=?");
-
+////                .usersByUsernameQuery("select username,password, enabled from user where username=?")
+////                .authoritiesByUsernameQuery("select username, role from user_roles where username=?")
+//                .usersByUsernameQuery("SELECT `username`,`password`, `active`  FROM `users` WHERE `username`=?")
+//                .authoritiesByUsernameQuery("SELECT 'username', `USER` FROM `users` WHERE `username`=?")
+//                .passwordEncoder(passwordEncoder);
     }
 
 
@@ -77,8 +83,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .formLogin()
                 .disable();
-
     }
+
+//    @Bean
+//    public UserDetailsService userDetailsService() {
+//        return super.userDetailsService();
+//    }
 
     @Bean
     public AuthenticationManager authenticationManagerBean() throws Exception {
@@ -87,8 +97,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Bean
     public PasswordEncoder passwordEncoder() {
-
         return new BCryptPasswordEncoder();
     }
+
+
 
 }

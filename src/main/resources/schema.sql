@@ -61,6 +61,14 @@ create table if not exists ClientDetails (
   autoApproveScopes VARCHAR(255)
 );
 
+CREATE TABLE if not exists USERS (
+  username VARCHAR(254) NOT NULL PRIMARY KEY,
+  password VARCHAR(60) NOT NULL,
+  token VARCHAR(65) NULL,
+  active BOOL NOT NULL DEFAULT 0,
+  deleted BOOL NOT NULL DEFAULT 0
+);
+
 
 
 drop table if exists Cdsegnj;

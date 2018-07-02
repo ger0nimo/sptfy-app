@@ -10,12 +10,14 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 import org.springframework.core.env.Environment;
 import org.springframework.core.io.Resource;
+import org.springframework.http.HttpMethod;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.jdbc.datasource.init.DataSourceInitializer;
 import org.springframework.jdbc.datasource.init.DatabasePopulator;
 import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
@@ -47,19 +49,18 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     @Qualifier("authenticationManagerBean")
     private AuthenticationManager authenticationManager;
 
-    @Value("classpath:schema.sql")
-    private Resource schemaScript;
-
-
-//
 //    @Autowired
-//    Environment env;
+//    UserDetailsService userDetailsService;
 
-//    @Qualifier("dataSource")
-//    @Autowired
-//    private DataSource dataSource;
+//    @Value("classpath:schema.sql")
+//    private Resource schemaScript;
+
+
+    @Qualifier("dataSource")
+    @Autowired
+    private DataSource dataSource;
 //
-    private Integer tokenValidity = 60;
+    private Integer tokenValidity = 120;
 
     private Integer refreshTokenValidity = 3600;
 
@@ -82,12 +83,12 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
 
 //        //password and implicit flows in db
-//        clients.jdbc(dataSource())
-////                .withClient(this.implClientId)
-////                .authorizedGrantTypes("implicit")
-////                .scopes("read")
-////                .autoApprove(true)
-////                .and()
+//        clients.jdbc(dataSource)
+//////                .withClient(this.implClientId)
+//////                .authorizedGrantTypes("implicit")
+//////                .scopes("read")
+//////                .autoApprove(true)
+//////                .and()
 //                .withClient(this.passClientId)
 //                .secret(this.passwordEncoder.encode(this.clientSecret))
 //                .authorizedGrantTypes("password", "authorization_code", "refresh_token")
@@ -119,6 +120,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 
         endpoints
                 .tokenStore(tokenStore())
+                //.userDetailsService(userDetailsService)
                 //.authorizationCodeServices(authorizationCodeServices())
                 .authenticationManager(authenticationManager);
 
@@ -127,23 +129,25 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 
     @Bean
     public TokenStore tokenStore() {
-        return new JdbcTokenStore(dataSource());
-    }
-
-    //@Bean
-    public DataSource dataSource() {
-
-        DriverManagerDataSource dataSource = new DriverManagerDataSource();
-        dataSource.setDriverClassName("org.h2.Driver");
-        dataSource.setUrl("jdbc:h2:file:~/test;");
-        dataSource.setUsername("sa");
-        dataSource.setPassword("");
-        return dataSource;
+        return new JdbcTokenStore(dataSource);
     }
 
 //    @Bean
-//    protected AuthorizationCodeServices authorizationCodeServices() {
-//        return new JdbcAuthorizationCodeServices(dataSource());
+//    public DataSource dataSource() {
+//
+//        DriverManagerDataSource dataSource = new DriverManagerDataSource();
+//        dataSource.setDriverClassName("org.h2.Driver");
+//        dataSource.setUrl("jdbc:h2:file:~/test;");
+//        dataSource.setUsername("sa");
+//        dataSource.setPassword("");
+//        return dataSource;
 //    }
+
+    @Bean
+    protected AuthorizationCodeServices authorizationCodeServices() {
+        return new JdbcAuthorizationCodeServices(dataSource);
+    }
+
+
 
 }
