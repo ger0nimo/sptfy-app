@@ -1,7 +1,7 @@
 //package com.sptfy.web.app.Utils;
 //
-//import com.sptfy.web.app.Models.User;
-//import com.sptfy.web.app.Repositories.UserRepository;
+//import com.sptfy.web.app.Models.Users;
+//import com.sptfy.web.app.Repositories.UsersRepository;
 //import org.springframework.context.annotation.Role;
 //import org.springframework.security.core.GrantedAuthority;
 //import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -18,18 +18,18 @@
 //@Service
 //public class UserDetailsServiceImpl implements UserDetailsService {
 //
-//    private UserRepository userRepository;
+//    private UsersRepository userRepository;
 //
-//    public UserDetailsServiceImpl(UserRepository userRepository) {
+//    public UserDetailsServiceImpl(UsersRepository userRepository) {
 //        this.userRepository = userRepository;
 //    }
 //
 //    @Override
 //    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-//        Optional<User> user = this.userRepository.findByUsername(username);
+//        Optional<Users> user = this.userRepository.findByUsername(username);
 //        if (!user.isPresent())
-//            throw new UsernameNotFoundException("User does not exists!");
-//        return new User(user.getId(), user.getUsername(), user.get().getPassword(), user.get().getRole());
+//            throw new UsernameNotFoundException("Users does not exists!");
+//        return new Users(user.getId(), user.getUsername(), user.get().getPassword(), user.get().getRole());
 //    }
 //
 //

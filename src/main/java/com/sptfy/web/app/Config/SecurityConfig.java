@@ -53,7 +53,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 ////                .usersByUsernameQuery("select username,password, enabled from user where username=?")
 ////                .authoritiesByUsernameQuery("select username, role from user_roles where username=?")
 //                .usersByUsernameQuery("SELECT `username`,`password`, `active`  FROM `users` WHERE `username`=?")
-//                .authoritiesByUsernameQuery("SELECT 'username', `USER` FROM `users` WHERE `username`=?")
+//                .authoritiesByUsernameQuery("SELECT `user` FROM `username` WHERE `username`=?")
 //                .passwordEncoder(passwordEncoder);
     }
 

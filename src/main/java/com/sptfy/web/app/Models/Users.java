@@ -13,7 +13,13 @@
 //
 //@Entity
 //@Data//lombok
-//public class User {
+//public class Users {
+//
+//    public Users(String username, String password, String role) {
+//        this.username = username;
+//        this.password = password;
+//        this.role = role;
+//    }
 //
 //    @Id
 //    @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,3 +31,4 @@
 //
 //    private String role;
 //}
+//

@@ -30,8 +30,8 @@ import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.JdbcTokenStore;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
 
-
 import javax.sql.DataSource;
+
 
 @Configuration
 @EnableAuthorizationServer
@@ -84,11 +84,11 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 
 //        //password and implicit flows in db
 //        clients.jdbc(dataSource)
-//////                .withClient(this.implClientId)
-//////                .authorizedGrantTypes("implicit")
-//////                .scopes("read")
-//////                .autoApprove(true)
-//////                .and()
+////////                .withClient(this.implClientId)
+////////                .authorizedGrantTypes("implicit")
+////////                .scopes("read")
+////////                .autoApprove(true)
+////////                .and()
 //                .withClient(this.passClientId)
 //                .secret(this.passwordEncoder.encode(this.clientSecret))
 //                .authorizedGrantTypes("password", "authorization_code", "refresh_token")
