@@ -6,7 +6,10 @@
 //import org.springframework.context.ApplicationListener;
 //import org.springframework.context.event.ContextRefreshedEvent;
 //import org.springframework.security.crypto.password.PasswordEncoder;
+//import org.springframework.stereotype.Component;
+//import org.springframework.transaction.annotation.EnableTransactionManagement;
 //
+//@Component
 //public class DevBootstrap implements ApplicationListener<ContextRefreshedEvent> {
 //
 //

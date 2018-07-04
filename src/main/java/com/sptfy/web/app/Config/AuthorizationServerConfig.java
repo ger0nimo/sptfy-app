@@ -38,8 +38,6 @@ import javax.sql.DataSource;
 public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdapter {
 
 
-    Logger logger = LoggerFactory.getLogger(getClass().getName());
-
     private String passClientId = "passClientId";
     private String implClientId = "implClientId";
 
@@ -52,7 +50,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 //    @Autowired
 //    UserDetailsService userDetailsService;
 
-//    @Value("classpath:schema.sql")
+//    @Value("classpath:sqlschema.file")
 //    private Resource schemaScript;
 
 
