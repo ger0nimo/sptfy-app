@@ -1,25 +1,15 @@
 package com.sptfy.web.app.Config;
 
+import com.sptfy.web.app.Service.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.env.Environment;
-import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.User.UserBuilder;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.oauth2.provider.token.TokenStore;
-import org.springframework.security.oauth2.provider.token.store.JdbcTokenStore;
-import org.springframework.security.web.access.channel.ChannelProcessingFilter;
 
 import javax.sql.DataSource;
 
@@ -31,28 +21,29 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private PasswordEncoder passwordEncoder;
 
     @Autowired
-    @Qualifier("dataSource")//tmp
+//    @Qualifier("dataSource")//tmp
     private DataSource dataSource;  //tmp
 
-//    @Autowired
-//    UserDetailsService userDetailsService;
+    @Autowired
+    UserDetailsServiceImpl userDetailsService;
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 
-        auth.inMemoryAuthentication()
-                .withUser("user").password(passwordEncoder.encode("123")).roles("USER");
-        auth.inMemoryAuthentication()
-                .withUser("admin").password(passwordEncoder.encode("123")).roles("USER", "ADMIN");
+//        auth.inMemoryAuthentication()
+//                .withUser("user").password(passwordEncoder.encode("123")).roles("USER");
+//        auth.inMemoryAuthentication()
+//                .withUser("admin").password(passwordEncoder.encode("123")).roles("USER", "ADMIN");
 
 
-//        auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder);
+        auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder);
 
+//        auth.authenticationProvider(authenticationProvider());
 
 //        auth.jdbcAuthentication().dataSource(dataSource)    //tmp
 ////                .usersByUsernameQuery("select username,password, enabled from user where username=?")
 ////                .authoritiesByUsernameQuery("select username, role from user_roles where username=?")
-//                .usersByUsernameQuery("SELECT `username`,`password`, `active`  FROM `users` WHERE `username`=?")
+//                .usersByUsernameQuery("SELECT `username`,`password`,  FROM `users` WHERE `username`=?")
 //                .authoritiesByUsernameQuery("SELECT `user` FROM `username` WHERE `username`=?")
 //                .passwordEncoder(passwordEncoder);
     }
@@ -99,7 +90,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //    public PasswordEncoder passwordEncoder() {
 //        return new BCryptPasswordEncoder();
 //    }
-
 
 
 }

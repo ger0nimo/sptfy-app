@@ -1,17 +1,19 @@
-package com.sptfy.web.app.Models;
+package com.sptfy.web.app.Model;
 
 
-import lombok.Data;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 
 @Entity
 
 @Data//lombok
+//@NoArgsConstructor
+//@AllArgsConstructor
 public class Users {
+
+    public Users() {
+    }
 
     public Users(String username, String password, String role) {
         this.username = username;
@@ -19,18 +21,10 @@ public class Users {
         this.role = role;
     }
 
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-
 
     private String username;
 
@@ -39,5 +33,7 @@ public class Users {
 
 
     private String role;
+
+
 }
 
