@@ -7,5 +7,4 @@ public interface UsersRepository extends CrudRepository<Users, Integer> {
 
     Users findByUsername(String username);
 
-
 }

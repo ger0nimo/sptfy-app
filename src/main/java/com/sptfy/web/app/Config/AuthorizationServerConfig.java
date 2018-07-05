@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
@@ -57,7 +58,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     @Qualifier("dataSource")
     @Autowired
     private DataSource dataSource;
-//
+
     private Integer tokenValidity = 120;
 
     private Integer refreshTokenValidity = 3600;
@@ -79,6 +80,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 
     @Override
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
+
 
 //        //password and implicit flows in db
 //        clients.jdbc(dataSource)
@@ -121,8 +123,6 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
                 //.userDetailsService(userDetailsService)
                 //.authorizationCodeServices(authorizationCodeServices())
                 .authenticationManager(authenticationManager);
-
-
     }
 
     @Bean
@@ -130,22 +130,8 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
         return new JdbcTokenStore(dataSource);
     }
 
-//    @Bean
-//    public DataSource dataSource() {
-//
-//        DriverManagerDataSource dataSource = new DriverManagerDataSource();
-//        dataSource.setDriverClassName("org.h2.Driver");
-//        dataSource.setUrl("jdbc:h2:file:~/test;");
-//        dataSource.setUsername("sa");
-//        dataSource.setPassword("");
-//        return dataSource;
-//    }
-
     @Bean
     protected AuthorizationCodeServices authorizationCodeServices() {
         return new JdbcAuthorizationCodeServices(dataSource);
     }
-
-
-
 }

@@ -18,8 +18,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     private UsersRepository userRepository;
 
-//    private String userRole;
-
     public UserDetailsServiceImpl(UsersRepository userRepository) {
         this.userRepository = userRepository;
     }
@@ -38,7 +36,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Users user = this.userRepository.findByUsername(username);
-//        userRole = user.getRole();
+
         if (user == null) {
             throw new UsernameNotFoundException(username+" does not exist!");
         }

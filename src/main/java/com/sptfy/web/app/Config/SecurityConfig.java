@@ -11,8 +11,6 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import javax.sql.DataSource;
-
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
@@ -21,31 +19,20 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private PasswordEncoder passwordEncoder;
 
     @Autowired
-//    @Qualifier("dataSource")//tmp
-    private DataSource dataSource;  //tmp
-
-    @Autowired
     UserDetailsServiceImpl userDetailsService;
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 
+        //Users from memory
 //        auth.inMemoryAuthentication()
 //                .withUser("user").password(passwordEncoder.encode("123")).roles("USER");
 //        auth.inMemoryAuthentication()
 //                .withUser("admin").password(passwordEncoder.encode("123")).roles("USER", "ADMIN");
 
 
+        // Users from DB
         auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder);
-
-//        auth.authenticationProvider(authenticationProvider());
-
-//        auth.jdbcAuthentication().dataSource(dataSource)    //tmp
-////                .usersByUsernameQuery("select username,password, enabled from user where username=?")
-////                .authoritiesByUsernameQuery("select username, role from user_roles where username=?")
-//                .usersByUsernameQuery("SELECT `username`,`password`,  FROM `users` WHERE `username`=?")
-//                .authoritiesByUsernameQuery("SELECT `user` FROM `username` WHERE `username`=?")
-//                .passwordEncoder(passwordEncoder);
     }
 
 
@@ -76,20 +63,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .disable();
     }
 
-//    @Bean
-//    public UserDetailsService userDetailsService() {
-//        return super.userDetailsService();
-//    }
-
     @Bean
     public AuthenticationManager authenticationManagerBean() throws Exception {
         return super.authenticationManagerBean();
     }
-
-//    @Bean
-//    public PasswordEncoder passwordEncoder() {
-//        return new BCryptPasswordEncoder();
-//    }
-
-
 }
