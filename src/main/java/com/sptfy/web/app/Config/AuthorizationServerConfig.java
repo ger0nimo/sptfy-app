@@ -81,24 +81,24 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     @Override
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
 
-        //password flow
-//        clients.inMemory() //memory
-          clients.jdbc(dataSource) //db
-                .withClient(this.passClientId)
-                .secret(this.passwordEncoder.encode(this.clientSecret))
-                .authorizedGrantTypes("password", "authorization_code", "refresh_token")
-                .accessTokenValiditySeconds(this.tokenValidity)
-                .refreshTokenValiditySeconds(this.refreshTokenValidity)
-                .scopes("read", "write");
-//              .and().build();??
+//        //password flow
+////        clients.inMemory() //memory
+//          clients.jdbc(dataSource) //db
+//                .withClient(this.passClientId)
+//                .secret(this.passwordEncoder.encode(this.clientSecret))
+//                .authorizedGrantTypes("password", "authorization_code", "refresh_token")
+//                .accessTokenValiditySeconds(this.tokenValidity)
+//                .refreshTokenValiditySeconds(this.refreshTokenValidity)
+//                .scopes("read", "write");
+////              .and().build();??
 
 //        implicit flow in memory
-//        clients.inMemory() //memory
+        clients.inMemory() //memory
 //        clients.jdbc(dataSource) //db
-//                .withClient(this.implClientId)
-//                .authorizedGrantTypes("implicit")
-//                .scopes("read")
-//                .autoApprove(true);
+                .withClient(this.implClientId)
+                .authorizedGrantTypes("implicit")
+                .scopes("read")
+                .autoApprove(true);
     }
 
     @Override
