@@ -96,8 +96,9 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
         clients.inMemory() //memory
 //        clients.jdbc(dataSource) //db
                 .withClient(this.implClientId)
-                .authorizedGrantTypes("implicit")
+                .authorizedGrantTypes("implicit", "refresh_token")
                 .scopes("read")
+//                .accessTokenValiditySeconds(3600).refreshTokenValiditySeconds(2592000);
                 .autoApprove(true);
     }
 
