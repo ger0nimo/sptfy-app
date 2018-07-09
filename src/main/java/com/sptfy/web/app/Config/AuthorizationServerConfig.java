@@ -1,24 +1,10 @@
 package com.sptfy.web.app.Config;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Primary;
-import org.springframework.core.env.Environment;
-import org.springframework.core.io.Resource;
-import org.springframework.http.HttpMethod;
-import org.springframework.jdbc.datasource.DriverManagerDataSource;
-import org.springframework.jdbc.datasource.init.DataSourceInitializer;
-import org.springframework.jdbc.datasource.init.DatabasePopulator;
-import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
@@ -29,15 +15,12 @@ import org.springframework.security.oauth2.provider.code.AuthorizationCodeServic
 import org.springframework.security.oauth2.provider.code.JdbcAuthorizationCodeServices;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.JdbcTokenStore;
-import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
 
 import javax.sql.DataSource;
-
 
 @Configuration
 @EnableAuthorizationServer
 public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdapter {
-
 
     private String passClientId = "passClientId";
     private String implClientId = "implClientId";
@@ -48,12 +31,8 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     @Qualifier("authenticationManagerBean")
     private AuthenticationManager authenticationManager;
 
-//    @Autowired
-//    UserDetailsService userDetailsService;
-
 //    @Value("classpath:sqlschema.file")
 //    private Resource schemaScript;
-
 
     @Qualifier("dataSource")
     @Autowired
@@ -65,10 +44,6 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 
     @Autowired
     PasswordEncoder passwordEncoder;
-
-//    @Autowired
-//    UserDetailsService userDetailsService;
-
 
     @Override
     public void configure(
@@ -82,24 +57,24 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
 
 //        //password flow
-////        clients.inMemory() //memory
+        clients.inMemory() //memory
 //          clients.jdbc(dataSource) //db
-//                .withClient(this.passClientId)
-//                .secret(this.passwordEncoder.encode(this.clientSecret))
-//                .authorizedGrantTypes("password", "authorization_code", "refresh_token")
-//                .accessTokenValiditySeconds(this.tokenValidity)
-//                .refreshTokenValiditySeconds(this.refreshTokenValidity)
-//                .scopes("read", "write");
+                .withClient(this.passClientId)
+                .secret(this.passwordEncoder.encode(this.clientSecret))
+                .authorizedGrantTypes("password", "authorization_code", "refresh_token")
+                .accessTokenValiditySeconds(this.tokenValidity)
+                .refreshTokenValiditySeconds(this.refreshTokenValidity)
+                .scopes("read", "write");
 ////              .and().build();??
 
 //        implicit flow in memory
-        clients.inMemory() //memory
-//        clients.jdbc(dataSource) //db
-                .withClient(this.implClientId)
-                .authorizedGrantTypes("implicit", "refresh_token")
-                .scopes("read")
-//                .accessTokenValiditySeconds(3600).refreshTokenValiditySeconds(2592000);
-                .autoApprove(true);
+//        clients.inMemory() //memory
+////        clients.jdbc(dataSource) //db
+//                .withClient(this.implClientId)
+//                .authorizedGrantTypes("implicit", "refresh_token")
+//                .scopes("read")
+////                .accessTokenValiditySeconds(3600).refreshTokenValiditySeconds(2592000);
+//                .autoApprove(true);
     }
 
     @Override
@@ -107,8 +82,6 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 
         endpoints
                 .tokenStore(tokenStore())
-                //.userDetailsService(userDetailsService)
-                //.authorizationCodeServices(authorizationCodeServices())
                 .authenticationManager(authenticationManager);
     }
 
