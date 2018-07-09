@@ -21,19 +21,14 @@ public class Users {
         this.role = role;
     }
 
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     private String username;
 
-
     private String password;
 
-
     private String role;
-
-
 }
 

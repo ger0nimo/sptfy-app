@@ -11,7 +11,6 @@ import org.springframework.stereotype.Component;
 @Component
 public class DevBootstrap implements ApplicationListener<ContextRefreshedEvent> {
 
-
     @Autowired
     PasswordEncoder passwordEncoder;
 
@@ -32,8 +31,5 @@ public class DevBootstrap implements ApplicationListener<ContextRefreshedEvent> 
         Users user1 = new Users("user", passwordEncoder.encode("123"),"USER");
 
         userRepository.save(user1);
-
-
-
     }
 }
