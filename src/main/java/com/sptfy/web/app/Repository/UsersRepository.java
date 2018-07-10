@@ -1,10 +1,10 @@
 package com.sptfy.web.app.Repository;
 
-import com.sptfy.web.app.Model.Users;
+import com.sptfy.web.app.Model.User;
 import org.springframework.data.repository.CrudRepository;
 
-public interface UsersRepository extends CrudRepository<Users, Integer> {
+public interface UsersRepository extends CrudRepository<User, Integer> {
 
-    Users findByUsername(String username);
+    User findByUsername(String username);
 
 }

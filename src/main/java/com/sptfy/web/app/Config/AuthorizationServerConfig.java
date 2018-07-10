@@ -38,7 +38,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     @Autowired
     private DataSource dataSource;
 
-    private Integer tokenValidity = 120;
+    private Integer tokenValidity = 60*60;
 
     private Integer refreshTokenValidity = 3600;
 

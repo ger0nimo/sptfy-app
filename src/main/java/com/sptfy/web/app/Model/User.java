@@ -10,12 +10,12 @@ import javax.persistence.*;
 @Data//lombok
 //@NoArgsConstructor
 //@AllArgsConstructor
-public class Users {
+public class User {
 
-    public Users() {
+    public User() {
     }
 
-    public Users(String username, String password, String role) {
+    public User(String username, String password, String role) {
         this.username = username;
         this.password = password;
         this.role = role;

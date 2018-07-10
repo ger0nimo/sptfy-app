@@ -1,6 +1,6 @@
 package com.sptfy.web.app.Bootstrap;
 
-import com.sptfy.web.app.Model.Users;
+import com.sptfy.web.app.Model.User;
 import com.sptfy.web.app.Repository.UsersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
@@ -28,7 +28,7 @@ public class DevBootstrap implements ApplicationListener<ContextRefreshedEvent> 
 
     private void initData(){
 
-        Users user1 = new Users("user", passwordEncoder.encode("123"),"USER");
+        User user1 = new User("user", passwordEncoder.encode("123"),"USER");
 
         userRepository.save(user1);
     }
