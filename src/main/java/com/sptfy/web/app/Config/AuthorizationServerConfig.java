@@ -1,5 +1,6 @@
 package com.sptfy.web.app.Config;
 
+import com.sptfy.web.app.Service.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
@@ -38,6 +39,9 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     @Autowired
     private DataSource dataSource;
 
+    @Autowired
+    UserDetailsServiceImpl userDetailsService;
+
     private Integer tokenValidity = 60*60;
 
     private Integer refreshTokenValidity = 3600;
@@ -56,7 +60,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     @Override
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
 
-//        //password flow
+        //password flow
         clients.inMemory() //memory
 //          clients.jdbc(dataSource) //db
                 .withClient(this.passClientId)
@@ -65,7 +69,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
                 .accessTokenValiditySeconds(this.tokenValidity)
                 .refreshTokenValiditySeconds(this.refreshTokenValidity)
                 .scopes("read", "write");
-////              .and().build();??
+//////              .and().build();??
 
 //        implicit flow in memory
 //        clients.inMemory() //memory

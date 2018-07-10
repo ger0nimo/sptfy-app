@@ -1,7 +1,7 @@
 package com.sptfy.web.app.Service;
 
 import com.sptfy.web.app.Model.User;
-import com.sptfy.web.app.Repository.UsersRepository;
+import com.sptfy.web.app.Repository.UserRepository;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -15,9 +15,9 @@ import java.util.List;
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
 
-    private UsersRepository userRepository;
+    private UserRepository userRepository;
 
-    public UserDetailsServiceImpl(UsersRepository userRepository) {
+    public UserDetailsServiceImpl(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
@@ -27,6 +27,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         List<GrantedAuthority> authoritiesList = new ArrayList<>();
 
             authoritiesList.add(new SimpleGrantedAuthority(user.getRole()));
+
+        System.out.println(user.getRole());
 
             return authoritiesList;
     }
