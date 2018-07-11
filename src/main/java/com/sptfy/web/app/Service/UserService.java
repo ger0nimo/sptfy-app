@@ -1,5 +1,6 @@
 package com.sptfy.web.app.Service;
 
+import com.sptfy.web.app.Exception.BusinessException;
 import com.sptfy.web.app.Model.User;
 import com.sptfy.web.app.Repository.UserRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -17,15 +18,20 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public void createUser(String username, String password){
+    public void createUser(String username, String password) throws Exception {
 
         String hashedPassword = passwordEncoder.encode(password);
 
-        System.out.println("BEFORE HASH: "+password);
-        System.out.println("AFTER HASH: "+ hashedPassword);
+        User user = userRepository.findByUsername(username);
 
-        User user = new User(username,hashedPassword,"USER");
+        if(user == null){
 
-        userRepository.save(user);
+            User user2 = new User(username,hashedPassword,"ROLE_USER"); // HAS TO BE "ROLE_[DEFINED ROLE, e.g. USER]"
+            userRepository.save(user2);
+
+        } else{
+
+            throw new BusinessException("User '"+username+"' already exist!");
+        }
     }
 }

@@ -18,8 +18,9 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
                         .antMatchers("/h2-console/**").permitAll() //normally this should strictly required authentication
                         .antMatchers("/registration").permitAll()
                         //.antMatchers("/**").hasRole("USER")       // * - authentication required for everything after /rest, ** - everything after /rest including /rest//
-                        .antMatchers("/rest/*").hasRole("USER")
-                .and()
+                        //.antMatchers("/rest/*").authenticated()
+                        .antMatchers("/rest/*").hasRole("USER") // here "USER" in db "ROLE_USER"
+                        .and()
                 .csrf().disable()                       //these two are mandatory to enable
                 .headers().frameOptions().disable()    //H2 Console when Spring Security is configured
                         .and().exceptionHandling().accessDeniedHandler(new OAuth2AccessDeniedHandler());
