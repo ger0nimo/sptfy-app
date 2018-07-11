@@ -1,17 +1,24 @@
 package com.sptfy.web.app.Controller;
 
+import com.sptfy.web.app.Model.User;
+import com.sptfy.web.app.Repository.UserRepository;
 import com.sptfy.web.app.Service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/registration")
 public class RegistrationController {
 
     UserService userService;
+
+    @Autowired
+    UserRepository userRepository;
+
+    @Autowired
+    PasswordEncoder passwordEncoder;
 
     public RegistrationController(UserService userService) {
         this.userService = userService;
@@ -23,5 +30,17 @@ public class RegistrationController {
         userService.createUser(username,password);
 
         return "User "+username+" has been created!";
+    }
+
+    @GetMapping("/get")
+    public String getUser(@RequestParam String username){
+
+
+        User user = userRepository.findByUsername(username);
+
+
+
+
+        return "USER: "+user.getId()+", "+user.getUsername()+", "+user.getPassword()+", "+user.getRole();
     }
 }
