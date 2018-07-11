@@ -1,10 +1,6 @@
 package com.sptfy.web.app.Controller;
 
-import com.sptfy.web.app.Exception.BusinessException;
-import com.sptfy.web.app.Model.User;
-import com.sptfy.web.app.Repository.UserRepository;
 import com.sptfy.web.app.Service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @RestController

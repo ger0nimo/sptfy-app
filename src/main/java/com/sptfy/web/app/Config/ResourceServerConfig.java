@@ -20,9 +20,13 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
                         //.antMatchers("/**").hasRole("USER")       // * - authentication required for everything after /rest, ** - everything after /rest including /rest//
                         //.antMatchers("/rest/*").authenticated()
                         .antMatchers("/rest/*").hasRole("USER") // here "USER" in db "ROLE_USER"
+//                        .and()
+//                        .formLogin()
+//                        .and()
+//                        .httpBasic()
                         .and()
                 .csrf().disable()                       //these two are mandatory to enable
-                .headers().frameOptions().disable()    //H2 Console when Spring Security is configured
-                        .and().exceptionHandling().accessDeniedHandler(new OAuth2AccessDeniedHandler());
+                .headers().frameOptions().disable();    //H2 Console when Spring Security is configured
+//                        .and().exceptionHandling().accessDeniedHandler(new OAuth2AccessDeniedHandler());
     }
 }

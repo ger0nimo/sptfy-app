@@ -30,8 +30,7 @@ public class UserService {
             userRepository.save(user2);
 
         } else{
-
-            throw new BusinessException("User '"+username+"' already exist!");
+            throw new BusinessException("User '"+username+"' already exists!");
         }
     }
 }
