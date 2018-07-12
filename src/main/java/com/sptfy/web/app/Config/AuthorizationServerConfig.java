@@ -91,11 +91,12 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 
     @Bean
     public TokenStore tokenStore() {
+
         return new JdbcTokenStore(dataSource);
     }
 
-    @Bean
-    protected AuthorizationCodeServices authorizationCodeServices() {
-        return new JdbcAuthorizationCodeServices(dataSource);
-    }
+//    @Bean
+//    protected AuthorizationCodeServices authorizationCodeServices() {
+//        return new JdbcAuthorizationCodeServices(dataSource);
+//    }
 }

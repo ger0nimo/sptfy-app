@@ -21,26 +21,24 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         this.userRepository = userRepository;
     }
 
-
-    private List<GrantedAuthority> getAuthoritiesList(User user){
+    private List<GrantedAuthority> getAuthoritiesList(User user) {
 
         List<GrantedAuthority> authoritiesList = new ArrayList<>();
 
-            authoritiesList.add(new SimpleGrantedAuthority(user.getRole()));
+        authoritiesList.add(new SimpleGrantedAuthority(user.getRole()));
 
         System.out.println(user.getRole());
 
-            return authoritiesList;
+        return authoritiesList;
     }
-
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = this.userRepository.findByUsername(username);
 
         if (user == null) {
-            throw new UsernameNotFoundException(username+" does not exist!");
+            throw new UsernameNotFoundException(username + " does not exist!");
         }
-        return new org.springframework.security.core.userdetails.User(user.getUsername(),user.getPassword(),true,true,true,true, getAuthoritiesList(user));
+        return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), true, true, true, true, getAuthoritiesList(user));
     }
 }

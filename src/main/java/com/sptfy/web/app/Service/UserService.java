@@ -26,7 +26,7 @@ public class UserService {
 
         if(user == null){
 
-            User user2 = new User(username,hashedPassword,"ROLE_USER"); // HAS TO BE "ROLE_[DEFINED ROLE, e.g. USER]"
+            User user2 = new User(username,hashedPassword,"ROLE_USER"); // HAS TO BE "ROLE_XYZ" HERE, e.g."ROLE_USER"
             userRepository.save(user2);
 
         } else{
