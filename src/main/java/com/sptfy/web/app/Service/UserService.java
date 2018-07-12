@@ -3,6 +3,7 @@ package com.sptfy.web.app.Service;
 import com.sptfy.web.app.Exception.BusinessException;
 import com.sptfy.web.app.Model.User;
 import com.sptfy.web.app.Repository.UserRepository;
+import com.sptfy.web.app.Utils.DateFormater;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -26,11 +27,13 @@ public class UserService {
 
         if(user == null){
 
-            User user2 = new User(username,hashedPassword,"ROLE_USER"); // HAS TO BE "ROLE_XYZ" HERE, e.g."ROLE_USER"
+            User user2 = new User(username,hashedPassword,"ROLE_USER",DateFormater.getCurrentDate(),true,true,true,true,false); // HAS TO BE "ROLE_XYZ" HERE, e.g."ROLE_USER"
             userRepository.save(user2);
 
         } else{
             throw new BusinessException("User '"+username+"' already exists!");
         }
     }
+
+
 }

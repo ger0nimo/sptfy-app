@@ -21,10 +21,10 @@ import javax.sql.DataSource;
 @EnableAuthorizationServer
 public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdapter {
 
-    private String passClientId = "passClientId";
-    private String implClientId = "implClientId";
+    public static final String PASS_CLIENT_ID = "passClientId";
+    public static final String IMPL_CLIENT_ID = "implClientId";
+    public static final String CLIENT_SECRET = "webSecret";
 
-    private String clientSecret = "webSecret";
 
     @Autowired
     @Qualifier("authenticationManagerBean")
@@ -61,8 +61,8 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
         //password flow
         clients.inMemory() //memory
 //          clients.jdbc(dataSource) //db
-                .withClient(this.passClientId)
-                .secret(this.passwordEncoder.encode(this.clientSecret))
+                .withClient(this.PASS_CLIENT_ID)
+                .secret(this.passwordEncoder.encode(this.CLIENT_SECRET))
                 .authorizedGrantTypes("password", "authorization_code", "refresh_token")
                 .accessTokenValiditySeconds(this.tokenValidity)
                 .refreshTokenValiditySeconds(this.refreshTokenValidity)
@@ -72,10 +72,10 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 //        implicit flow in memory
 //        clients.inMemory() //memory
 ////        clients.jdbc(dataSource) //db
-//                .withClient(this.implClientId)
+//                .withClient(this.IMPL_CLIENT_ID)
 //                .authorizedGrantTypes("implicit", "refresh_token")
 //                .scopes("read")
-////                .accessTokenValiditySeconds(3600).refreshTokenValiditySeconds(2592000);
+//                .accessTokenValiditySeconds(3600).refreshTokenValiditySeconds(2592000)
 //                .autoApprove(true);
     }
 

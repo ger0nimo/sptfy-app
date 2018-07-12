@@ -15,10 +15,10 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
                 http
                 .authorizeRequests()                                            //ORDER OF TWO BELOW IS IMPORTANT!
                         .antMatchers("/h2-console/**").permitAll() //normally this should strictly required authentication
-                        .antMatchers("/registration").permitAll()
+                        .antMatchers("/join").permitAll()
                         //.antMatchers("/**").hasRole("USER")       // * - authentication required for everything after /rest, ** - everything after /rest including /rest//
                         //.antMatchers("/rest/*").authenticated()
-                        .antMatchers("/rest/*").hasRole("USER") // here "USER" in db "ROLE_USER"
+                        .antMatchers("/**").hasRole("USER") // here "USER" in db "ROLE_USER"
 //                        .and()
 //                        .formLogin()
 //                        .and()

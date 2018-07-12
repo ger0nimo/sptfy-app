@@ -1,5 +1,5 @@
 
--- Tables created in H2 console, can be created as well here
+-- USE if JDBC, Entity if JPA
 
 drop table if exists oauth_client_details;
 create table oauth_client_details (
