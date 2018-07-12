@@ -1,6 +1,5 @@
 package com.sptfy.web.app.Model;
 
-
 import lombok.*;
 
 import javax.persistence.*;

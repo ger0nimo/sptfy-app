@@ -7,7 +7,6 @@ import org.springframework.http.HttpStatus;
 @JsonInclude(JsonInclude.Include.NON_NULL) // ignore field if its value is null and it's not included in the JSON response
 public class ErrorMessage {
 
-
     @JsonProperty("Status Code")
     private Integer statusCode;
 
