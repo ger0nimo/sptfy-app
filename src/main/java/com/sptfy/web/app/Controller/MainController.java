@@ -3,6 +3,8 @@ package com.sptfy.web.app.Controller;
 import com.sptfy.web.app.Service.UserService;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+
 @RestController
 //@RequestMapping("/user")
 public class MainController {
@@ -15,9 +17,10 @@ public class MainController {
 
 
     @GetMapping("/")
-    public String getUserData(){
+    public Map<String,Object> getUserData(@RequestParam String username) throws Exception {
 
-        return "INDEX"; //JSON Z danymi uzytkownika + ew dane spotify
+
+        return userService.getUserData(username);
     }
 
 

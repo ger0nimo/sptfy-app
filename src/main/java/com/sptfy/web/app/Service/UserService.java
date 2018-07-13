@@ -7,6 +7,9 @@ import com.sptfy.web.app.Utils.DateFormater;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @Service
 public class UserService {
 
@@ -33,6 +36,23 @@ public class UserService {
         } else{
             throw new BusinessException("User '"+username+"' already exists!");
         }
+    }
+
+    public Map<String,Object> getUserData(String username){
+
+        User user = userRepository.findByUsername(username);
+        System.out.println(user.getUsername());
+
+        Map<String, Object> userData = new HashMap<>();
+
+        userData.put("username",user.getUsername());
+        userData.put("userRole",user.getRole());
+        userData.put("registrationDate",user.getRegistrationDate());
+        userData.put("isPremium",user.isPremium());
+        //TODO add other user data
+
+
+        return userData;
     }
 
 
