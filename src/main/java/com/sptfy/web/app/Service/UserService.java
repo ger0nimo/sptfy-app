@@ -51,9 +51,6 @@ public class UserService {
         userData.put("isPremium",user.isPremium());
         //TODO add other user data
 
-
         return userData;
     }
-
-
 }
