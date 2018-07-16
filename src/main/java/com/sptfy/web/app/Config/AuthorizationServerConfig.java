@@ -25,7 +25,6 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     public static final String IMPL_CLIENT_ID = "implClientId";
     public static final String CLIENT_SECRET = "webSecret";
 
-
     @Autowired
     @Qualifier("authenticationManagerBean")
     private AuthenticationManager authenticationManager;

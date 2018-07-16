@@ -30,11 +30,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //        auth.inMemoryAuthentication()
 //                .withUser("admin").password(passwordEncoder.encode("123")).roles("USER", "ADMIN");
 
-
         // User from DB
         auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder);
-    }
 
+    }
 
     @Override
     public void configure(HttpSecurity http) throws Exception {

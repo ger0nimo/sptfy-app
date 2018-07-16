@@ -4,6 +4,10 @@ import com.sptfy.web.app.Exception.BusinessException;
 import com.sptfy.web.app.Model.User;
 import com.sptfy.web.app.Repository.UserRepository;
 import com.sptfy.web.app.Utils.DateFormater;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -25,31 +29,34 @@ public class UserService {
     public void createUser(String username, String password) throws Exception {
 
         String hashedPassword = passwordEncoder.encode(password);
-
         User user = userRepository.findByUsername(username);
 
-        if(user == null){
-
-            User user2 = new User(username,hashedPassword,"ROLE_USER",DateFormater.getCurrentDate(),true,true,true,true,false); // HAS TO BE "ROLE_XYZ" HERE, e.g."ROLE_USER"
+        if (user == null) {
+            User user2 = new User(username, hashedPassword, "ROLE_USER", DateFormater.getCurrentDate(), true, true, true, true, false); // HAS TO BE "ROLE_XYZ" HERE, e.g."ROLE_USER"
             userRepository.save(user2);
 
-        } else{
-            throw new BusinessException("User '"+username+"' already exists!");
+        } else {
+            throw new BusinessException("User '" + username + "' already exists!");
         }
     }
 
-    public Map<String,Object> getUserData(String username){
+    public Map<String, Object> getUserData() throws BusinessException {
 
-        User user = userRepository.findByUsername(username);
-        System.out.println(user.getUsername());
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String currentUsername = authentication.getName();
+
+        if (currentUsername == null) throw new BusinessException("No user has been authenticated!");
+
+        User user = userRepository.findByUsername(currentUsername);
 
         Map<String, Object> userData = new HashMap<>();
 
-        userData.put("username",user.getUsername());
-        userData.put("userRole",user.getRole());
-        userData.put("registrationDate",user.getRegistrationDate());
-        userData.put("isPremium",user.isPremium());
-        //TODO add other user data
+        //DTO instead of this???
+        userData.put("username", user.getUsername());
+        userData.put("userRole", user.getRole());
+        userData.put("registrationDate", user.getRegistrationDate());
+        userData.put("isPremium", user.isPremium());
+        //TODO add other user data + above comment?
 
         return userData;
     }
