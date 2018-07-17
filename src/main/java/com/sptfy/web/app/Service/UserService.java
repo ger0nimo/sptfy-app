@@ -4,10 +4,9 @@ import com.sptfy.web.app.Exception.BusinessException;
 import com.sptfy.web.app.Model.User;
 import com.sptfy.web.app.Repository.UserRepository;
 import com.sptfy.web.app.Utils.DateFormater;
-import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import io.swagger.annotations.Authorization;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -17,9 +16,12 @@ import java.util.Map;
 @Service
 public class UserService {
 
-    PasswordEncoder passwordEncoder;
+    private PasswordEncoder passwordEncoder;
 
-    UserRepository userRepository;
+    private UserRepository userRepository;
+
+//    public UserService() {
+//    } EMPTY CONSTRUCTOR - NULL POINTER EXCEPTION!!!!!!!!!!!
 
     public UserService(PasswordEncoder passwordEncoder, UserRepository userRepository) {
         this.passwordEncoder = passwordEncoder;
@@ -29,11 +31,13 @@ public class UserService {
     public void createUser(String username, String password) throws Exception {
 
         String hashedPassword = passwordEncoder.encode(password);
-        User user = userRepository.findByUsername(username);
+        User existingUser = userRepository.findByUsername(username);
 
-        if (user == null) {
-            User user2 = new User(username, hashedPassword, "ROLE_USER", DateFormater.getCurrentDate(), true, true, true, true, false); // HAS TO BE "ROLE_XYZ" HERE, e.g."ROLE_USER"
-            userRepository.save(user2);
+        System.out.println(existingUser);
+
+        if (existingUser == null) {
+            User user = new User(username, hashedPassword, "ROLE_USER", DateFormater.getCurrentDate(), true, true, true, true, false); // HAS TO BE "ROLE_XYZ" HERE, e.g."ROLE_USER"
+            userRepository.save(user);
 
         } else {
             throw new BusinessException("User '" + username + "' already exists!");
@@ -46,6 +50,7 @@ public class UserService {
         String currentUsername = authentication.getName();
 
         if (currentUsername == null) throw new BusinessException("No user has been authenticated!");
+        System.out.println(currentUsername);
 
         User user = userRepository.findByUsername(currentUsername);
 

@@ -17,10 +17,12 @@ import java.util.Map;
 
 import static org.hamcrest.Matchers.equalTo;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -77,7 +79,30 @@ public class MainControllerTest {
                 .andExpect(jsonPath("$.Message", equalTo("No user has been authenticated!")));
     }
 
-    public void createUser_ifParamsArePassedInQuery() {
+    @Test
+    public void createUser_ifParamsArePassedInQuery_userIsAddedToDataBase() throws Exception {
 
+        String username = "user";
+        String password = "password";
+        String returnMessage = "User '" + username + "' has been created!";
+
+        mockMvc.perform(post(MainController.REGISTRATION_ENDPOINT)
+               .contentType(MediaType.TEXT_PLAIN)
+               .param("username",username)
+               .param("password",password))
+                .andDo(print())
+                .andExpect(status().is2xxSuccessful())
+                .andExpect(content().string(returnMessage));
+
+        verify(userService,times(1)).createUser(username,password);
+    }
+
+    @Test
+    public void createUser_ifParamsAreNotPassedInQuery_400IsReturned() throws Exception {
+
+        mockMvc.perform(post(MainController.REGISTRATION_ENDPOINT)
+                .contentType(MediaType.TEXT_PLAIN))
+                .andDo(print())
+                .andExpect(status().is4xxClientError());
     }
 }
