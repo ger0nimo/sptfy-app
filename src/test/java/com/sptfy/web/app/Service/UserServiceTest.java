@@ -6,16 +6,11 @@ import com.sptfy.web.app.Repository.UserRepository;
 import com.sptfy.web.app.Utils.DateFormater;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.notNull;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.mockito.internal.verification.VerificationModeFactory.times;
@@ -35,7 +30,6 @@ public class UserServiceTest {
     public void setUp() {
         userService = new UserService(passwordEncoder, userRepository);
     }
-
 
     @Test
     public void createUser_ifUserNotExist_itIsAddedToDataBase() throws Exception {
@@ -66,14 +60,17 @@ public class UserServiceTest {
     }
 
     @Test
-    public void getUserData_ifUserIsAuthenticated_returnUserData(){
+    public void getUserData_ifUserIsAuthenticated_returnUserData() throws BusinessException {
 
-    }
+        String authenticatedUser = "user";
+        String hashedPassword = passwordEncoder.encode("123");
+        String role = "ROLE_USER";
+        User user = new User(authenticatedUser, hashedPassword, role, DateFormater.getCurrentDate(), true, true, true, true, false);
 
-    @Test//(expected = BusinessException.class)
-    public void getUserData_ifUserIsNotAuthenticated_throwsBusinnesException() throws BusinessException {
+        when(userRepository.findByUsername(authenticatedUser)).thenReturn(user);
 
+        userService.getUserData(authenticatedUser);
 
-
+        verify(userRepository,times(1)).findByUsername(authenticatedUser);
     }
 }

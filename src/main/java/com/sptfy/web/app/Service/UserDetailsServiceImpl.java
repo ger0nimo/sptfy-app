@@ -2,6 +2,7 @@ package com.sptfy.web.app.Service;
 
 import com.sptfy.web.app.Model.User;
 import com.sptfy.web.app.Repository.UserRepository;
+import com.sptfy.web.app.Utils.UserData;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -34,9 +35,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
         User user = this.userRepository.findByUsername(username);
 
-//        if (user == null) {
-//            throw new UsernameNotFoundException(username + " does not exist!");
-//        }
-        return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), user.isEnabled(), user.isAccountNonExpired(), user.isCredentialsNonExpired(), user.isAccountNonLocked(), getAuthoritiesList(user));
+        return new UserData(user.getUsername(), user.getPassword(), user.isEnabled(), user.isAccountNonExpired(), user.isCredentialsNonExpired(), user.isAccountNonLocked(), getAuthoritiesList(user));
     }
 }

@@ -4,9 +4,6 @@ import com.sptfy.web.app.Exception.BusinessException;
 import com.sptfy.web.app.Model.User;
 import com.sptfy.web.app.Repository.UserRepository;
 import com.sptfy.web.app.Utils.DateFormater;
-import io.swagger.annotations.Authorization;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -17,7 +14,6 @@ import java.util.Map;
 public class UserService {
 
     private PasswordEncoder passwordEncoder;
-
     private UserRepository userRepository;
 
 //    public UserService() {
@@ -33,8 +29,6 @@ public class UserService {
         String hashedPassword = passwordEncoder.encode(password);
         User existingUser = userRepository.findByUsername(username);
 
-        System.out.println(existingUser);
-
         if (existingUser == null) {
             User user = new User(username, hashedPassword, "ROLE_USER", DateFormater.getCurrentDate(), true, true, true, true, false); // HAS TO BE "ROLE_XYZ" HERE, e.g."ROLE_USER"
             userRepository.save(user);
@@ -44,15 +38,9 @@ public class UserService {
         }
     }
 
-    public Map<String, Object> getUserData() throws BusinessException {
+    public Map<String, Object> getUserData(String authenticatedUser) {
 
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String currentUsername = authentication.getName();
-
-        if (currentUsername == null) throw new BusinessException("No user has been authenticated!");
-        System.out.println(currentUsername);
-
-        User user = userRepository.findByUsername(currentUsername);
+        User user = userRepository.findByUsername(authenticatedUser);
 
         Map<String, Object> userData = new HashMap<>();
 
