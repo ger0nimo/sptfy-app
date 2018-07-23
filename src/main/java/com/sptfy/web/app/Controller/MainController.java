@@ -1,6 +1,5 @@
 package com.sptfy.web.app.Controller;
 
-
 import com.sptfy.web.app.Service.UserService;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -15,7 +14,6 @@ public class MainController {
     public static final String REGISTRATION_URL = "/join";
 
     UserService userService;
-    User authenticatedUser;
 
     public MainController(UserService userService) {
         this.userService = userService;
@@ -33,9 +31,5 @@ public class MainController {
         userService.createUser(username, password);
 
         return "User '" + username + "' has been created!";
-    }
-
-    public void setAuthenticatedUser(User authenticatedUser) {
-        this.authenticatedUser = authenticatedUser;
     }
 }
